@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { ArrowLeft, Search, ShoppingCart } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { Search, ShoppingCart } from "lucide-react";
+import MainLayout from "@/components/MainLayout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -17,7 +17,6 @@ const medicines = [
 ];
 
 const Medicines = () => {
-  const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
   const [cart, setCart] = useState<number[]>([]);
 
@@ -31,29 +30,15 @@ const Medicines = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <MainLayout>
       <header className="gradient-primary text-white py-6 px-4 card-shadow">
         <div className="max-w-6xl mx-auto flex items-center justify-between">
-          <div className="flex items-center space-x-4">
-            <Button
-              variant="ghost"
-              size="icon"
-              className="bg-white/20 hover:bg-white/30 text-white"
-              onClick={() => navigate("/dashboard")}
-            >
-              <ArrowLeft className="w-5 h-5" />
-            </Button>
-            <div>
-              <h1 className="text-3xl font-bold">Order Medicines</h1>
-              <p className="text-white/90">Quick delivery to your doorstep</p>
-            </div>
+          <div>
+            <h1 className="text-3xl font-bold mb-1">Order Medicines</h1>
+            <p className="text-white/90">Quick delivery to your doorstep</p>
           </div>
           <div className="relative">
-            <Button
-              variant="ghost"
-              size="icon"
-              className="bg-white/20 hover:bg-white/30 text-white"
-            >
+            <Button variant="ghost" size="icon" className="bg-white/20 hover:bg-white/30 text-white">
               <ShoppingCart className="w-5 h-5" />
             </Button>
             {cart.length > 0 && (
@@ -65,8 +50,8 @@ const Medicines = () => {
         </div>
       </header>
 
-      <main className="max-w-6xl mx-auto px-4 py-8">
-        <div className="relative mb-8">
+      <main className="max-w-6xl mx-auto px-4 py-6">
+        <div className="relative mb-6">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-5 h-5" />
           <Input
             type="text"
@@ -89,33 +74,21 @@ const Medicines = () => {
                   <Badge variant="secondary" className="gradient-secondary border-0 text-white">
                     {medicine.category}
                   </Badge>
-                  <Badge
-                    variant={medicine.stock === "In Stock" ? "default" : "destructive"}
-                    className={medicine.stock === "In Stock" ? "bg-secondary" : ""}
-                  >
+                  <Badge variant={medicine.stock === "In Stock" ? "default" : "destructive"} className={medicine.stock === "In Stock" ? "bg-secondary" : ""}>
                     {medicine.stock}
                   </Badge>
                 </div>
                 <h3 className="font-bold text-lg mb-2">{medicine.name}</h3>
                 <p className="text-2xl font-bold text-primary mb-4">₹{medicine.price}</p>
-                <Button
-                  className="w-full gradient-primary border-0"
-                  onClick={() => handleAddToCart(medicine.id)}
-                >
+                <Button className="w-full gradient-primary border-0" onClick={() => handleAddToCart(medicine.id)}>
                   Add to Cart
                 </Button>
               </CardContent>
             </Card>
           ))}
         </div>
-
-        {filteredMedicines.length === 0 && (
-          <div className="text-center py-12">
-            <p className="text-muted-foreground text-lg">No medicines found matching your search.</p>
-          </div>
-        )}
       </main>
-    </div>
+    </MainLayout>
   );
 };
 
